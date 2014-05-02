@@ -40,7 +40,7 @@ else:
     listSorted = False    # List has not been sorted yet
     menuStr = "1-Sort by Name, 2-Sort by Age, 3-Sort by Zip: "
 
-    # get a valid Add / Change / Delete response
+    # Main loop
     while True:
         print "\nMain Menu (press Enter to exit):"
         optn = raw_input(menuStr)
