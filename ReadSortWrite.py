@@ -26,8 +26,8 @@ try:
     with open(fname, "r") as nameListFile:  # open the text file to read
         # Read the file into a Python list. Each line in the file becomes a
         # string element in the list. .splitlines() removes the \n (newline)
-        # character from the end of each line.
-        infoList = nameListFile.read().splitlines()   # read file into list and strip newline characters
+        # character from the end of each line and filter skips blank lines
+        infoList = filter(lambda r : r != '',nameListFile.read().splitlines())
 except:
     print "Error: File",fname,"does not exist"
 else:
@@ -35,6 +35,7 @@ else:
     # Convert each comma-delimited string in the list into a sub-list so we can sort on
     # any field and remove any leading and trailing blanks (whitespace)
     infoList = [[fld.strip() for fld in s.split(",")] for s in infoList]
+
     printList(infoList)   # call our list print function defined above
 
     listSorted = False    # List has not been sorted yet
@@ -49,7 +50,16 @@ else:
         
         if optn[0] in "123":
             # Sort the list by the selected field
+
+            if optn[0] == '2':
+                # convert the Age field to an integer so it will sort correctly
+                infoList = [[fld[0], int(fld[1]), fld[2]] for fld in infoList]                    
+            
             infoList.sort(key=itemgetter(int(optn[0])-1))
+            
+            if optn[0] == '2':
+                # convert the Age field back to a string so it will print correctly
+                infoList = [[fld[0], str(fld[1]), fld[2]] for fld in infoList]                    
             
             print "\nSorted by", ["Name:","Age:","Zipcode:"][int(optn[0])-1]
             printList(infoList)   # call our list print function defined above
@@ -71,4 +81,3 @@ else:
             print "Invalid selection"
     # end while loop
 # end try / except / else
-
